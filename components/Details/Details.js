@@ -15,8 +15,6 @@ const Details = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
   const [episodes, setEpisodes] = useState([]);
 
-  navigation.setOptions({ title: route.params.title });
-
   const getMovies = async (ep_id) => {
     try {
       const response = await mal.findAnime(ep_id, 'videos');
@@ -31,10 +29,11 @@ const Details = ({ navigation, route }) => {
 
   useEffect(() => {
     getMovies(route.params.ep_id);
+    navigation.setOptions({ title: route.params.title });
   }, []);
 
   if (isLoading) return <ActivityIndicator />;
-
+  
   return (
     <FlatList
       style={styles.container}
