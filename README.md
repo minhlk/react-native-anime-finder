@@ -11,7 +11,7 @@ Development is continuing now. If you want to help with this project, please con
  - [X] [FEATURE] Get list episodes
  - [ ] [FEATURE] Watch preview video
  - [X] [CODING] Extract duplicated code to smaller component
- - [ ] [CODING] Using Typescript for strict syntax
+ - [X] [CODING] Using Typescript for strict syntax
  - [ ] [CODING] Using Redux for state management
  - [ ] [CODING] Include CI for jest testing
  - [ ] etc...
