@@ -12,7 +12,7 @@ Development is continuing now. If you want to help with this project, please con
  - [ ] [FEATURE] Watch preview video
  - [X] [CODING] Extract duplicated code to smaller component
  - [X] [CODING] Using Typescript for strict syntax
- - [ ] [CODING] Using Redux for state management
+ - [X] [CODING] Using Redux for state management
  - [X] [CODING] Include CI for jest testing
  - [ ] etc...
  
