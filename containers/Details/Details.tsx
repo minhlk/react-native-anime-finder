@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, ActivityIndicator } from 'react-native';
 import ListView from '../../components/ListView/ListView.js';
-import { getMovies } from '../../api/api.js';
-
-interface EpisodeList {
-  episodes: Array<EpisodeDetail>
-}
+import { fetchDetails } from '../../actions/fetchDetails';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 interface EpisodeDetail {
   episode: string,
@@ -13,11 +11,8 @@ interface EpisodeDetail {
   image_url: string
 }
 
-const Details = ({ navigation, route } : any) => {
-  const [isLoading, setLoading] = useState(true);
-  const [episodes, setEpisodes] = useState<Array<EpisodeDetail>>([]);
-  const [isError, setIsError] = useState(false);
-
+const Details = (props: any) => {
+  const { navigation, route } = props;
   const convertToCommonItem = (item: EpisodeDetail) => {
     return {
       id: item['episode'],
@@ -28,23 +23,24 @@ const Details = ({ navigation, route } : any) => {
   }
 
   useEffect(() => {
-    getMovies(route.params.id, (res: EpisodeList) => {
-      setEpisodes(res.episodes);
-      setLoading(false);
-    }, (_: any) => {
-      setIsError(true);
-      setLoading(false);
-    });
-
+    props.fetchDetails(route.params.id)
     navigation.setOptions({ title: route.params.title });
-    return () => {
-      setEpisodes([])
-    }
   }, []);
 
-  if (isLoading) return <ActivityIndicator />;
-  if (isError) return (<View><Text>Fail to fetch data</Text></View>);
-  return <ListView items={episodes} convertToCommonItem={convertToCommonItem} onItemPressed={() => console.log('pressed')} />
+  if (props.isFetching) return <ActivityIndicator/>
+  if (props.isError) return (<View><Text>Fail to fetch data</Text></View>);
+  return <ListView items={props.detailsList} convertToCommonItem={convertToCommonItem} onItemPressed={() => console.log('pressed')} />
 }
 
-export default Details;
+
+const mapStateToProps = state => ({
+  detailsList: state.fetchDetails.detailsList,
+  isFetching: state.fetchDetails.isFetching,
+  isError: state.fetchDetails.isError
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchDetails: bindActionCreators(fetchDetails, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Details)
