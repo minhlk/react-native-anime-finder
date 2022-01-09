@@ -9,18 +9,30 @@ import {
 import { getAnimesByName } from '../../api/api.js';
 import ListView from '../../components/ListView/ListView.js';
 
-const Home = ({ navigation }) => {
-  const [items, setItems] = useState([]);
+interface AnimeList {
+  results : Array<AnimeInfo>
+}
+
+interface AnimeInfo {
+  mal_id: number,
+  url: string,
+  image_url: string,
+  title: string,
+  synopsis: string
+}
+
+const Home = ({ navigation } : any) => {
+  const [items, setItems] = useState<Array<AnimeInfo>>([]);
   const [searchQuery, setSearchQuery] = useState('gal');
   const [isLoading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   
   const searchAnime = () => {
-    getAnimesByName(searchQuery, (res) => {
+    getAnimesByName(searchQuery, (res: AnimeList) => {
       console.log(res)
       setItems(res.results);
       setLoading(false);
-    }, (_) => {
+    }, (_: any) => {
       setIsError(true);
       setLoading(false);
     });
@@ -34,16 +46,16 @@ const Home = ({ navigation }) => {
       searchAnime();
   };
 
-  const convertToCommonItem = (item) => {
+  const convertToCommonItem = (item: AnimeInfo) => {
     return {
-      id: item['mal_id'],
-      title: item['title'],
-      imgUrl: item['image_url'],
-      description: item['synopsis'],
+      id: item.mal_id,
+      title: item.title,
+      imgUrl: item.image_url,
+      description: item.synopsis,
     }
   }
 
-  const onItemPressed = (item) => {
+  const onItemPressed = (item: any) => {
     navigation.navigate('Details', { id: item.id, title: item.title });
   }
 
