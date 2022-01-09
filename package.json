@@ -39,6 +39,7 @@
   },
   "jest": {
     "preset": "react-native",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
     "cacheDirectory": "./cache",
     "coveragePathIgnorePatterns": [
       "./app/utils/vendor"
